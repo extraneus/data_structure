@@ -1,0 +1,53 @@
+from queue import Queue
+
+adj_list = {
+    "A": ["B", "D"],
+    "B": ["A", "C"],
+    "C": ["B"],
+    "D": ["A", "E", "F"],
+    "E": ["D", "F", "G"],
+    "F": ["D", "E", "H"],
+    "G": ["E", "H"],
+    "H": ["G", "F"]
+}
+
+def bfs(start_node, goal_node):
+    visited = {}
+    level = {}
+    parents = {}
+    bfs_travel_output = []
+    que = Queue()
+
+    for node in adj_list.keys():
+        visited[node] = False
+        parents[node] = None
+        level[node] = -1
+
+    visited[start_node] = True
+    level[start_node] = 0
+    que.put(start_node)
+
+    while not que.empty():
+        u = que.get()
+        bfs_travel_output.append(u)
+
+        if u == goal_node:
+            print("Goal node found!")
+            break
+
+        for v in adj_list[u]:
+            if not visited[v]:
+                visited[v] = True
+                parents[v] = u
+                level[v] = level[u] + 1
+                que.put(v)
+
+    print("BFS traversal:", bfs_travel_output)
+    print("Visited nodes:", visited)
+    print("Levels:", level)
+    print("Parents:", parents)
+
+# Example usage:
+start_node = "A"
+goal_node = "G"
+bfs(start_node, goal_node)
